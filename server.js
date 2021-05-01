@@ -2,11 +2,14 @@ const express = require("express");
 const getTheWeatherPlease = require("./weather/weather-api");
 const chalk = require("chalk");
 const app = express();
+const path = require("path");
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/home", (req, res) => {
-  res.send("Welcome to express");
+app.use(express.static(path.join(__dirname, "weather-app-ui" , "build")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "weather-app-ui", "build", "index.html"));
 });
 
 app.get("/get-weather", (req, res) => {
@@ -27,5 +30,7 @@ app.get("/get-weather", (req, res) => {
 });
 
 app.listen(3080, () => {
+  console.log(__dirname);
+  console.log(  path.join(__dirname, "weather-app-ui" , "build"));
   console.log(chalk.green("Surver is up and running"));
 });
